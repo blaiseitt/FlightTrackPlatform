@@ -1,0 +1,29 @@
+server:
+  port: 8084
+
+spring:
+  kafka:
+    bootstrap-servers: localhost:9092
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      properties:
+        acks: all
+        retries: 3
+        enable.idempotence: true
+        spring.json.add.type.headers: false
+
+opensky:
+  base-url: https://opensky-network.org/api
+  client-id: ${OPENSKY_CLIENT_ID}
+  client-secret: ${OPENSKY_CLIENT_SECRET}
+  token-url: https://auth.opensky-network.org/auth/realms/opensky-network/protocol/openid-connect/token
+  bounding-box:
+    lamin: 48.9
+    lamax: 55.0
+    lomin: 14.1
+    lomax: 24.2
+
+scheduling:
+  position-poll-ms: 30000
+  enabled: true

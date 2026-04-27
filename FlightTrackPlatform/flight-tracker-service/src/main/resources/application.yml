@@ -1,0 +1,42 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: flight-tracker-service
+  config:
+    import: optional:configserver:http://localhost:8888
+
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/flightplatform
+
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: flight-tracker-group
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: "com.flightplatform.common.event"
+        spring.json.value.default.type: com.flightplatform.common.event.FlightPositionEvent
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    prefer-ip-address: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+
+logging:
+  level:
+    com.flightplatform: DEBUG
+    org.springframework.kafka: INFO
+    org.springframework.data.mongodb: DEBUG

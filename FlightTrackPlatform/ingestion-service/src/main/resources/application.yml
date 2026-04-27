@@ -1,0 +1,63 @@
+server:
+  port: 8084
+
+spring:
+  application:
+    name: ingestion-service
+  config:
+    import: optional:configserver:http://localhost:8888   # ← add this here
+  cloud:
+    config:
+      fail-fast: false
+      retry:
+        max-attempts: 3
+
+  kafka:
+    bootstrap-servers: localhost:9092
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      properties:
+        acks: all
+        retries: 3
+        enable.idempotence: true
+        spring.json.add.type.headers: false
+
+opensky:
+  base-url: https://opensky-network.org/api
+  client-id: ${OPENSKY_CLIENT_ID}
+  client-secret: ${OPENSKY_CLIENT_SECRET}
+  token-url: https://auth.opensky-network.org/auth/realms/opensky-network/protocol/openid-connect/token
+  bounding-box:
+    lamin: 48.9
+    lamax: 55.0
+    lomin: 14.1
+    lomax: 24.2
+
+scheduling:
+  position-poll-ms: 30000
+  enabled: true
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+    register-with-eureka: true
+    fetch-registry: true
+  instance:
+    prefer-ip-address: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      show-details: always
+
+logging:
+  level:
+    com.flightplatform: DEBUG
+    org.springframework.kafka: INFO
+    reactor.netty.http.client: INFO

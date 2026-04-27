@@ -1,0 +1,178 @@
+# Flight Intelligence Platform
+
+## First-time setup
+
+### 1. Initialize config-repo as a git repo
+Config Server reads from a local git repo. You must init it before starting config-server.
+
+```bash
+cd config-repo
+git init
+git add .
+git commit -m "initial config"
+cd ..
+```
+
+> Every time you change a config file, you must `git commit` in config-repo.
+> Config Server reads from git history, not the working directory.
+
+---
+
+### 2. Set your OpenSky credentials (optional but recommended)
+Without credentials you get anonymous access: rate-limited but functional for testing.
+
+```bash
+export OPENSKY_CLIENT_ID=your_client_id
+export OPENSKY_CLIENT_SECRET=your_client_secret
+```
+
+Register at https://opensky-network.org — free account, then create an API client
+in your account settings.
+
+---
+
+### 3. Start infrastructure
+
+```bash
+cd docker
+docker-compose up -d
+```
+
+Wait ~30 seconds for Kafka and MongoDB to be healthy:
+```bash
+docker-compose ps   # all should show "healthy"
+```
+
+Useful UIs once running:
+| UI              | URL                        | Credentials |
+|-----------------|----------------------------|-------------|
+| Kafka UI        | http://localhost:8090      | none        |
+| Mongo Express   | http://localhost:8091      | none        |
+| RabbitMQ UI     | http://localhost:15672     | guest/guest |
+| Eureka Dashboard| http://localhost:8761      | none        |
+
+---
+
+### 4. Start services IN ORDER
+
+Open a terminal tab for each. Wait for each to print "Started ... in X seconds" before moving to the next.
+
+**Tab 1 — Config Server (port 8888)**
+```bash
+cd config-server
+mvn spring-boot:run
+```
+Verify: `curl http://localhost:8888/ingestion-service/default`
+You should see your ingestion-service.yml config returned as JSON.
+
+**Tab 2 — Discovery Server / Eureka (port 8761)**
+```bash
+cd discovery-server
+mvn spring-boot:run
+```
+Verify: Open http://localhost:8761 — Eureka dashboard loads.
+
+**Tab 3 — Flight Tracker Service (port 8081)**
+```bash
+cd flight-tracker-service
+mvn spring-boot:run
+```
+Verify: `curl http://localhost:8081/api/flights/stats`
+Returns `{"totalTracked":0,...}` — no flights yet, that's expected.
+
+**Tab 4 — Ingestion Service (port 8084)**
+```bash
+cd ingestion-service
+mvn spring-boot:run
+```
+Watch the logs. After ~30 seconds you should see:
+```
+✓ Poll complete: 47 positions published in 1823ms
+```
+
+---
+
+## Verifying data flows end-to-end
+
+### After first poll — check Kafka
+Open Kafka UI: http://localhost:8090
+- Topics → `flight-positions` → Messages tab
+- You should see JSON messages appearing every 30 seconds
+
+### After a minute — check MongoDB
+Open Mongo Express: http://localhost:8091
+- Database: `flightintel` → Collection: `flights`
+- Documents should be appearing and updating
+
+Or via curl:
+```bash
+# How many flights are we tracking?
+curl http://localhost:8081/api/flights/stats
+
+# Get all currently active flights
+curl http://localhost:8081/api/flights/active
+
+# Get all airborne flights
+curl http://localhost:8081/api/flights/airborne
+
+# Look up a specific flight (grab an icao24 from the stats output)
+curl http://localhost:8081/api/flights/3c4b26
+```
+
+### Check Eureka registrations
+Open http://localhost:8761
+Both `INGESTION-SERVICE` and `FLIGHT-TRACKER-SERVICE` should appear as registered.
+
+---
+
+## Build commands
+
+```bash
+# Build everything from root (run this after pulling changes)
+mvn clean install -DskipTests
+
+# Build only common (required before building any service)
+mvn install -pl common
+
+# Build one service and everything it depends on
+mvn clean install -pl ingestion-service -am -DskipTests
+
+# Run a specific service from root (no need to cd)
+mvn spring-boot:run -pl ingestion-service -am
+
+# Check what version of a dependency is being used
+mvn dependency:tree -pl ingestion-service | grep kafka
+```
+
+---
+
+## Project structure
+
+```
+flight-intel/
+├── pom.xml                      ← parent pom, version management
+├── common/                      ← shared events, no Spring Boot main class
+├── config-server/               ← reads config-repo/, serves config to all services
+├── discovery-server/            ← Eureka service registry
+├── ingestion-service/           ← polls OpenSky, publishes to Kafka
+├── flight-tracker-service/      ← consumes Kafka, writes to MongoDB
+├── docker/
+│   └── docker-compose.yml       ← Kafka, MongoDB, Elasticsearch, RabbitMQ
+└── config-repo/                 ← git repo with all service config files
+    ├── application.yml          ← shared by ALL services
+    ├── ingestion-service.yml    ← overrides for ingestion-service
+    └── flight-tracker-service.yml
+```
+
+---
+
+## What you'll add next
+
+- `anomaly-detector-service` — consumes `flight-positions`, applies rules, publishes to `anomaly-detected`
+- `alert-service` — consumes `anomaly-detected`, queues notifications via RabbitMQ
+- `graphql-gateway` — GraphQL API with queries and WebSocket subscriptions
+- Elasticsearch sync in `flight-tracker-service`
+- Nginx config for reverse proxy
+- Kubernetes manifests (once Docker Compose version works)
+
+
