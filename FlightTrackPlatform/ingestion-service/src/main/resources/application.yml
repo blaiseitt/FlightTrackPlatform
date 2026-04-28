@@ -5,7 +5,7 @@ spring:
   application:
     name: ingestion-service
   config:
-    import: optional:configserver:http://localhost:8888   # ← add this here
+    import: optional:configserver:http://localhost:8888
   cloud:
     config:
       fail-fast: false

@@ -10,6 +10,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
 import reactor.core.publisher.Mono;
 
+import java.util.Locale;
 import java.util.Optional;
 
 @Component
@@ -19,23 +20,23 @@ public class OpenSkyClient {
     private final WebClient webClient;
     private final OpenSkyTokenService tokenService;
 
-    @Value("${opensky.base-url}")
-    private String baseUrl;
+    //TODO Bounding box class maybe
+    private final String baseUrl;
+    private final double lamin, lamax, lomin, lomax;
 
-    @Value("${opensky.bounding-box.lamin}")
-    private double lamin;
-    @Value("${opensky.bounding-box.lamax}")
-    private double lamax;
-    @Value("${opensky.bounding-box.lomin}")
-    private double lomin;
-    @Value("${opensky.bounding-box.lomax}")
-    private double lomax;
-
-    public OpenSkyClient(OpenSkyTokenService tokenService) {
+    public OpenSkyClient(OpenSkyTokenService tokenService, WebClient openSkyWebClient,
+                         @Value("${opensky.base-url}") String baseUrl,
+                         @Value("${opensky.bounding-box.lamin}") double lamin,
+                         @Value("${opensky.bounding-box.lamax}") double lamax,
+                         @Value("${opensky.bounding-box.lomin}") double lomin,
+                         @Value("${opensky.bounding-box.lomax}") double lomax) {
         this.tokenService = tokenService;
-        this.webClient = WebClient.builder()
-                .codecs(configurer -> configurer.defaultCodecs().maxInMemorySize(5 * 1024 * 1024))
-                .build();
+        this.webClient = openSkyWebClient;
+        this.baseUrl = baseUrl;
+        this.lamin = lamin;
+        this.lamax = lamax;
+        this.lomin = lomin;
+        this.lomax = lomax;
     }
 
     public Optional<OpenSkyResponse> fetchStates() {
@@ -81,7 +82,7 @@ public class OpenSkyClient {
     }
 
     private String buildUri() {
-        return String.format(
+        return String.format(Locale.US,
                 "%s/states/all?lamin=%s&lamax=%s&lomin=%s&lomax=%s",
                 baseUrl, lamin, lamax, lomin, lomax
         );

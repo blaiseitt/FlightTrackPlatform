@@ -13,6 +13,10 @@ spring:
 
   kafka:
     bootstrap-servers: localhost:9092
+    #added producer configuration in order to achieve working integration test.
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
     consumer:
       group-id: flight-tracker-group
       auto-offset-reset: earliest
