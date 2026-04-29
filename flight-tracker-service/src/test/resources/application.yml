@@ -3,6 +3,9 @@ eureka:
     enabled: false
 
 spring:
+  data:
+    mongodb:
+      uri: mongodb://localhost:1
   cloud:
     config:
       enabled: false
