@@ -10,7 +10,12 @@ pipeline {
         DOCKER_HOST = 'unix:///var/run/docker.sock'
         TESTCONTAINERS_RYUK_DISABLED = 'true'
     }
-//test
+
+    triggers {
+            githubPush()
+            pollSCM('H */2 * * *')
+    }
+
     stages {
 
         stage('Checkout') {
