@@ -1,0 +1,22 @@
+eureka:
+  client:
+    enabled: false
+
+spring:
+  cloud:
+    config:
+      enabled: false
+      import-check:
+        enabled: false
+  kafka:
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+    consumer:
+      group-id: flight-tracker-group
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: "com.flightplatform.common.event"
+        spring.json.value.default.type: com.flightplatform.common.event.FlightPositionEvent
