@@ -10,7 +10,7 @@ pipeline {
         DOCKER_HOST = 'unix:///var/run/docker.sock'
         TESTCONTAINERS_RYUK_DISABLED = 'true'
     }
-
+//test
     stages {
 
         stage('Checkout') {
