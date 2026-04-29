@@ -87,12 +87,14 @@ services:
       ME_CONFIG_BASICAUTH: false
 
   jenkins:
-    image: jenkins/jenkins:lts-jdk21
+    build: .
     container_name: jenkins
     user: root
     ports:
       - "8092:8080"
       - "50000:50000"
+    environment:
+      - TESTCONTAINERS_HOST_OVERRIDE=host.docker.internal
     volumes:
       - jenkins_home:/var/jenkins_home
       - /var/run/docker.sock:/var/run/docker.sock
