@@ -1,10 +1,6 @@
 version: '3.9'
 
 services:
-
-  # ─── Zookeeper ────────────────────────────────────────────────────────────
-  # Kafka still needs Zookeeper in this setup. Yes, KRaft exists but every
-  # KRaft image has initialization quirks on Windows. Zookeeper just works.
   zookeeper:
     image: confluentinc/cp-zookeeper:7.5.0
     container_name: flight-zookeeper
@@ -21,7 +17,7 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
-  # ─── Kafka ────────────────────────────────────────────────────────────────
+  # Kafka
   kafka:
     image: confluentinc/cp-kafka:7.5.0
     container_name: flight-kafka
@@ -33,7 +29,6 @@ services:
     environment:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      # Two listeners: one for inside Docker network, one for your host machine
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
       KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:29092,PLAINTEXT_HOST://0.0.0.0:9092
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
@@ -51,7 +46,7 @@ services:
       retries: 10
       start_period: 30s
 
-  # Kafka UI - view topics, messages, consumer groups in browser
+  # Kafka UI
   # http://localhost:8090
   kafka-ui:
     image: provectuslabs/kafka-ui:latest
@@ -63,11 +58,9 @@ services:
       - "8090:8080"
     environment:
       KAFKA_CLUSTERS_0_NAME: local
-      # Inside Docker network, Kafka listens on 29092 (PLAINTEXT listener)
-      # Your Spring Boot app on the host uses localhost:9092 (PLAINTEXT_HOST listener)
       KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:29092
 
-  # ─── MongoDB ──────────────────────────────────────────────────────────────
+  # MongoDB
   mongodb:
     image: mongo:7
     container_name: flight-mongodb
@@ -93,10 +86,20 @@ services:
       ME_CONFIG_MONGODB_URL: mongodb://mongodb:27017/
       ME_CONFIG_BASICAUTH: false
 
+  jenkins:
+    image: jenkins/jenkins:lts-jdk21
+    container_name: jenkins
+    user: root
+    ports:
+      - "8092:8080"
+      - "50000:50000"
+    volumes:
+      - jenkins_home:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock
+
 volumes:
   zookeeper-data:
   zookeeper-logs:
   kafka-data:
   mongo-data:
-  es-data:
-  rabbitmq-data:
+  jenkins_home:
