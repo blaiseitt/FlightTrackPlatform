@@ -1,4 +1,4 @@
-package com.flightplatform.ingestion.config;
+package com.flightplatform.ingestion.opensky;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

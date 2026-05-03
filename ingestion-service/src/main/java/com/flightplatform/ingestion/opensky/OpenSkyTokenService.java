@@ -1,4 +1,4 @@
-package com.flightplatform.ingestion.token;
+package com.flightplatform.ingestion.opensky;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;

@@ -1,8 +1,8 @@
-package com.flightplatform.ingestion.scheduler;
+package com.flightplatform.ingestion.opensky;
 
 import com.flightplatform.common.event.FlightPositionEvent;
-import com.flightplatform.ingestion.client.OpenSkyClient;
-import com.flightplatform.ingestion.domain.OpenSkyResponse;
+import com.flightplatform.ingestion.opensky.OpenSkyClient;
+import com.flightplatform.ingestion.opensky.OpenSkyResponse;
 import com.flightplatform.ingestion.publisher.FlightEventPublisher;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,7 +25,6 @@ public class FlightPollingScheduler {
     private final OpenSkyClient openSkyClient;
     private final FlightEventPublisher publisher;
 
-    // Simple counters visible in logs - you'll add Micrometer metrics later
     private final AtomicLong totalPollsSuccess = new AtomicLong(0);
     private final AtomicLong totalPollsFailure = new AtomicLong(0);
     private final AtomicLong totalEventsPublished = new AtomicLong(0);

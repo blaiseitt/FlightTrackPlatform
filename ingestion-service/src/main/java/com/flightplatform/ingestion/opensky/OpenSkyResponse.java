@@ -1,4 +1,4 @@
-package com.flightplatform.ingestion.domain;
+package com.flightplatform.ingestion.opensky;
 
 import lombok.Data;
 

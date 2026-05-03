@@ -1,4 +1,4 @@
-package com.flightplatform.ingestion.config;
+package com.flightplatform.ingestion.publisher;
 
 import com.flightplatform.common.event.KafkaTopics;
 import org.apache.kafka.clients.admin.NewTopic;

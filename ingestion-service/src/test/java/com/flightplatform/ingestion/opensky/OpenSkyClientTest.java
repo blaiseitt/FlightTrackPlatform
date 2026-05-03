@@ -1,7 +1,8 @@
-package com.flightplatform.ingestion.client;
+package com.flightplatform.ingestion.opensky;
 
-import com.flightplatform.ingestion.domain.OpenSkyResponse;
-import com.flightplatform.ingestion.token.OpenSkyTokenService;
+import com.flightplatform.ingestion.opensky.OpenSkyClient;
+import com.flightplatform.ingestion.opensky.OpenSkyResponse;
+import com.flightplatform.ingestion.opensky.OpenSkyTokenService;
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
