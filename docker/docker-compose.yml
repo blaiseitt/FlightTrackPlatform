@@ -97,6 +97,7 @@ services:
       - "5433:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+      - ./resources/airlines_clean.csv:/docker-entrypoint-initdb.d/airlines_clean.csv
 
   pgadmin:
     image: dpage/pgadmin4:latest
