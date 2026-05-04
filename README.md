@@ -1,18 +1,5 @@
 # Flight Intelligence Platform
 
-## First-time setup
-
-### 1. Initialize config-repo as a git repo
-Config Server reads from a local git repo. You must init it before starting config-server.
-
-```bash
-cd config-repo
-git init
-git add .
-git commit -m "initial config"
-cd ..
-```
-
 > Every time you change a config file, you must `git commit` in config-repo.
 > Config Server reads from git history, not the working directory.
 
@@ -24,10 +11,9 @@ Without credentials you get anonymous access: rate-limited but functional for te
 ```bash
 export OPENSKY_CLIENT_ID=your_client_id
 export OPENSKY_CLIENT_SECRET=your_client_secret
-```
 
-Register at https://opensky-network.org — free account, then create an API client
-in your account settings.
+set for Windows
+```
 
 ---
 
@@ -50,12 +36,22 @@ Useful UIs once running:
 | Mongo Express   | http://localhost:8091      | none        |
 | RabbitMQ UI     | http://localhost:15672     | guest/guest |
 | Eureka Dashboard| http://localhost:8761      | none        |
+| PostgreSQL Admin| http://localhost:5050      | none        |
 
 ---
 
 ### 4. Start services IN ORDER
 
 Open a terminal tab for each. Wait for each to print "Started ... in X seconds" before moving to the next.
+
+**Tab 0 build root project install shared dependencies**
+```
+# From flight-platform/ root
+mvn clean install -DskipTests
+
+# Or just install common so services can depend on it
+mvn install -pl common
+```
 
 **Tab 1 — Config Server (port 8888)**
 ```bash
@@ -84,10 +80,6 @@ Returns `{"totalTracked":0,...}` — no flights yet, that's expected.
 ```bash
 cd ingestion-service
 mvn spring-boot:run
-```
-Watch the logs. After ~30 seconds you should see:
-```
-✓ Poll complete: 47 positions published in 1823ms
 ```
 
 ---
@@ -157,22 +149,12 @@ flight-intel/
 ├── ingestion-service/           ← polls OpenSky, publishes to Kafka
 ├── flight-tracker-service/      ← consumes Kafka, writes to MongoDB
 ├── docker/
-│   └── docker-compose.yml       ← Kafka, MongoDB, Elasticsearch, RabbitMQ
+│   └── docker-compose.yml       ← Kafka, MongoDB, RabbitMQ
 └── config-repo/                 ← git repo with all service config files
     ├── application.yml          ← shared by ALL services
     ├── ingestion-service.yml    ← overrides for ingestion-service
     └── flight-tracker-service.yml
 ```
 
----
-
-## What you'll add next
-
-- `anomaly-detector-service` — consumes `flight-positions`, applies rules, publishes to `anomaly-detected`
-- `alert-service` — consumes `anomaly-detected`, queues notifications via RabbitMQ
-- `graphql-gateway` — GraphQL API with queries and WebSocket subscriptions
-- Elasticsearch sync in `flight-tracker-service`
-- Nginx config for reverse proxy
-- Kubernetes manifests (once Docker Compose version works)
 
 
