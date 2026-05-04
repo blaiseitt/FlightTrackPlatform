@@ -4,7 +4,7 @@ import com.flightplatform.common.event.FlightPositionEvent;
 import com.flightplatform.common.event.KafkaTopics;
 import com.flightplatform.tracker.FlightTrackerServiceApplication;
 import com.flightplatform.tracker.domain.Flight;
-import com.flightplatform.tracker.repository.FlightRepository;
+import com.flightplatform.tracker.mongo.repo.FlightRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

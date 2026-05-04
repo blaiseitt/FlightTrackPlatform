@@ -1,7 +1,7 @@
 package com.flightplatform.tracker.controller;
 
 import com.flightplatform.tracker.domain.Flight;
-import com.flightplatform.tracker.repository.FlightRepository;
+import com.flightplatform.tracker.mongo.repo.FlightRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;

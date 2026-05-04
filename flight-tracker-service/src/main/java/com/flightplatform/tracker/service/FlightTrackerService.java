@@ -2,7 +2,7 @@ package com.flightplatform.tracker.service;
 
 import com.flightplatform.common.event.FlightPositionEvent;
 import com.flightplatform.tracker.domain.Flight;
-import com.flightplatform.tracker.repository.FlightRepository;
+import com.flightplatform.tracker.mongo.repo.FlightRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -35,7 +35,6 @@ public class FlightTrackerService {
 
         return saved;
     }
-
     private Flight createNewFlight(FlightPositionEvent event) {
         log.info("New flight spotted: icao24={} callsign={} from {}",
                 event.getIcao24(), event.getCallsign(), event.getOriginCountry());

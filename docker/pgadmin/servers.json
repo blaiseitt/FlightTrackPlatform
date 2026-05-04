@@ -1,0 +1,13 @@
+{
+  "Servers": {
+    "1": {
+      "Name": "flightplatform",
+      "Group": "Servers",
+      "Host": "postgres",
+      "Port": 5432,
+      "MaintenanceDB": "flightplatform",
+      "Username": "flightuser",
+      "SSLMode": "prefer"
+    }
+  }
+}

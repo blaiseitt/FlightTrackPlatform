@@ -1,4 +1,4 @@
-package com.flightplatform.tracker.repository;
+package com.flightplatform.tracker.mongo.repo;
 
 import com.flightplatform.tracker.domain.Flight;
 import org.springframework.data.mongodb.repository.MongoRepository;
