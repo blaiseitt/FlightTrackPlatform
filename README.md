@@ -19,6 +19,13 @@ set for Windows
 
 ### 3. Start infrastructure
 
+**dev.ps1 usage(only for Windows):**
+- .\dev.ps1                        -> start all services
+- .\dev.ps1 -Skip ingestion-service -> start all except one
+- .\dev.ps1 -Skip ingestion-service,flight-tracker-service -> skip multiple
+- .\dev.ps1 -TestOnly              -> run all tests, no services started
+- .\dev.ps1 -Build                 -> mvn clean install only
+
 ```bash
 cd docker
 docker-compose up -d
