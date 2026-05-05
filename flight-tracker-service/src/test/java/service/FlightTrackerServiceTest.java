@@ -1,7 +1,7 @@
 package service;
 
 import com.flightplatform.common.event.FlightPositionEvent;
-import com.flightplatform.tracker.domain.Flight;
+import com.flightplatform.tracker.mongo.domain.Flight;
 import com.flightplatform.tracker.mongo.repo.FlightRepository;
 import com.flightplatform.tracker.service.FlightTrackerService;
 import org.junit.jupiter.api.Test;

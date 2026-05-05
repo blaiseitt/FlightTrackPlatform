@@ -30,6 +30,7 @@ docker-compose ps   # all should show "healthy"
 ```
 
 Useful UIs once running:
+
 | UI              | URL                        | Credentials |
 |-----------------|----------------------------|-------------|
 | Kafka UI        | http://localhost:8090      | none        |

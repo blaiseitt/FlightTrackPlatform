@@ -1,4 +1,4 @@
-package com.flightplatform.tracker.domain;
+package com.flightplatform.tracker.mongo.domain;
 
 import lombok.Builder;
 import lombok.Data;

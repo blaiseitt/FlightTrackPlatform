@@ -1,7 +1,7 @@
 package com.flightplatform.tracker.service;
 
 import com.flightplatform.common.event.FlightPositionEvent;
-import com.flightplatform.tracker.domain.Flight;
+import com.flightplatform.tracker.mongo.domain.Flight;
 import com.flightplatform.tracker.mongo.repo.FlightRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

@@ -1,7 +1,10 @@
 package com.flightplatform.tracker.controller;
 
-import com.flightplatform.tracker.domain.Flight;
+import com.flightplatform.tracker.controller.dto.FlightResponse;
+import com.flightplatform.tracker.jpa.entity.Airline;
+import com.flightplatform.tracker.mongo.domain.Flight;
 import com.flightplatform.tracker.mongo.repo.FlightRepository;
+import com.flightplatform.tracker.service.AirlineCache;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -19,11 +22,24 @@ import java.util.Map;
 public class FlightController {
 
     private final FlightRepository flightRepository;
+    private final AirlineCache airlineCache;
 
     @GetMapping("/{icao24}")
-    public ResponseEntity<Flight> getFlightByIcao24(@PathVariable String icao24) {
+    public ResponseEntity<FlightResponse> getFlightByIcao24(@PathVariable String icao24) {
         return flightRepository.findById(icao24)
-                .map(ResponseEntity::ok)
+                .map(flight -> {
+                    Airline airline = airlineCache
+                            .findByCallsign(flight.getCallsign())
+                            .orElse(null);
+
+                    FlightResponse response = FlightResponse.builder()
+                            .flight(flight)
+                            .airlineName(airline != null ? airline.getName() : "Unknown")
+                            .airlineCountry(airline != null ? airline.getCountry() : "Unknown")
+                            .build();
+
+                    return ResponseEntity.ok(response);
+                })
                 .orElse(ResponseEntity.notFound().build());
     }
 

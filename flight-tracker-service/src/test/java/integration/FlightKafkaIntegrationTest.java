@@ -3,7 +3,7 @@ package integration;
 import com.flightplatform.common.event.FlightPositionEvent;
 import com.flightplatform.common.event.KafkaTopics;
 import com.flightplatform.tracker.FlightTrackerServiceApplication;
-import com.flightplatform.tracker.domain.Flight;
+import com.flightplatform.tracker.mongo.domain.Flight;
 import com.flightplatform.tracker.mongo.repo.FlightRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
