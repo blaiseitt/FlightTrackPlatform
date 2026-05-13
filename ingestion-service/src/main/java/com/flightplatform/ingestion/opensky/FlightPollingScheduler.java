@@ -1,8 +1,6 @@
 package com.flightplatform.ingestion.opensky;
 
 import com.flightplatform.common.event.FlightPositionEvent;
-import com.flightplatform.ingestion.opensky.OpenSkyClient;
-import com.flightplatform.ingestion.opensky.OpenSkyResponse;
 import com.flightplatform.ingestion.publisher.FlightEventPublisher;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
