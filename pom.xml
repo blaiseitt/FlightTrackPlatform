@@ -22,6 +22,7 @@
         <module>discovery-server</module>
         <module>ingestion-service</module>
         <module>flight-tracker-service</module>
+        <module>weather-service</module>
     </modules>
 
     <properties>

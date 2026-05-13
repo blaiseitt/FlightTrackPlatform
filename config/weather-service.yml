@@ -1,0 +1,26 @@
+server:
+  port: 8085
+
+spring:
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/flightplatform
+
+  kafka:
+    bootstrap-servers: localhost:9092
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+    consumer:
+      group-id: weather-persistence-group
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: "com.flightplatform.common.event"
+weather:
+  openweather:
+    base-url: https://api.openweathermap.org/data/2.5
+    client-key: ${OPENWEATHER_KEY}
+  polling:
+    interval-ms: 1800000
+    initial-delay-ms: 30000

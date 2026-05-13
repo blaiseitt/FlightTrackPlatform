@@ -1,0 +1,46 @@
+server:
+  port: 8085
+
+spring:
+  application:
+    name: weather-service
+  config:
+    import: optional:configserver:http://localhost:8888
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/flightplatform
+
+weather:
+  openweather:
+    base-url: https://api.openweathermap.org/data/2.5
+    client-key: ${OPENWEATHER_KEY}
+  opensky:
+    bounding-box:
+      lamin: 48.9
+      lamax: 55.0
+      lomin: 14.1
+      lomax: 24.2
+
+kafka:
+  bootstrap-servers: localhost:9092
+  producer:
+    key-serializer: org.apache.kafka.common.serialization.StringSerializer
+    value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+  consumer:
+    group-id: weather-persistence-group
+    key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+    properties:
+      spring.json.trusted.packages: "com.flightplatform.common.event"
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    prefer-ip-address: true
+
+logging:
+  level:
+    com.flightplatform: DEBUG
+    org.springframework.kafka: INFO

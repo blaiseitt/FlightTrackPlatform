@@ -163,6 +163,30 @@ flight-intel/
     ├── ingestion-service.yml    ← overrides for ingestion-service
     └── flight-tracker-service.yml
 ```
+## Port map
 
+| Service / Tool           | Port  | Status                 |
+|--------------------------|-------|------------------------|
+| Config Server            | 8888  | ✅ Running              |
+| Eureka (Discovery)       | 8761  | ✅ Running              |
+| GraphQL Gateway          | 8080  | ❌ Not created yet      |
+| Flight Tracker Service   | 8081  | ✅ Running              |
+| Weather Service          | 8085  |  ✅ Running        |
+| Anomaly Detector Service | 8082  | ❌ Not created yet      |
+| Alert Service            | 8083  | ❌ Not created yet      |
+| Ingestion Service        | 8084  | ✅ Running              |
+| Zookeeper                | 2181  | ✅ Docker               |
+| Kafka                    | 9092  | ✅ Docker               |
+| Kafka UI                 | 8090  | ✅ Docker               |
+| MongoDB                  | 27017 | ✅ Docker               |
+| Mongo Express            | 8091  | ✅ Docker               |
+| PostgreSQL               | 5433  | ✅ Docker(host→5432)    |
+| pgAdmin                  | 5050  | ✅ Docker               |
+| Elasticsearch            | 9200  | ✅ Docker(ELK)          |
+| Logstash                 | 5000  | ✅ Docker (TCP input)   |
+| Logstash                 | 5044  | ✅ Docker (Beats input) |
+| Kibana                   | 5601  | ✅  Docker (ELK)        |
+| RabbitMQ                 | 5672  | ❌ Not started yet      |
+| RabbitMQ UI              | 15672 | ❌ Not started yet      |
 
 
