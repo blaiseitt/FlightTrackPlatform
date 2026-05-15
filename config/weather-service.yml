@@ -5,6 +5,20 @@ spring:
   data:
     mongodb:
       uri: mongodb://localhost:27017/flightplatform
+  datasource:
+    url: jdbc:postgresql://localhost:5433/flightplatform
+    username: flightuser
+    password: flightpass
+  jpa:
+    hibernate:
+      ddl-auto: validate
+  flyway:
+    enabled: true
+    table: flyway_schema_history_weather
+    locations: classpath:db/migration
+    url: jdbc:postgresql://localhost:5433/flightplatform
+    user: flightuser
+    password: flightpass
 
   kafka:
     bootstrap-servers: localhost:9092
@@ -22,5 +36,9 @@ weather:
     base-url: https://api.openweathermap.org/data/2.5
     client-key: ${OPENWEATHER_KEY}
   polling:
-    interval-ms: 1800000
-    initial-delay-ms: 30000
+    grid:
+      interval-ms: 1800000
+      initial-delay-ms: 30000
+    airports:
+      interval-ms: 3600000
+      initial-delay-ms: 120000

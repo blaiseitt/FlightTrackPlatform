@@ -1,8 +1,7 @@
-package com.flightplatform.weather.openweather;
+package com.flightplatform.weather.mongo.domain;
 
 import lombok.Builder;
 import lombok.Data;
-import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.annotation.Id;
 
@@ -17,6 +16,9 @@ public class WeatherSnapshot {
     private String id;
 
     private String bboxId;
+    private String airportIcao;
+    private boolean isAirport;
+
     private double centerLat;
     private double centerLon;
     private double minLat;

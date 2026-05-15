@@ -2,10 +2,14 @@ package com.flightplatform.weather;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
 @EnableScheduling
+@EnableMongoRepositories(basePackages = "com.flightplatform.weather.mongo")
+@EnableJpaRepositories(basePackages = "com.flightplatform.weather.jpa")
 public class WeatherServiceApplication {
     public static void main(String[] args) {
         SpringApplication.run(WeatherServiceApplication.class, args);

@@ -1,4 +1,4 @@
-package com.flightplatform.weather.openweather;
+package com.flightplatform.weather.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

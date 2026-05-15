@@ -23,6 +23,7 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
   flyway:
     enabled: true
+    table: flyway_schema_history_tracker
     locations: classpath:db/migration
     url: jdbc:postgresql://localhost:5433/flightplatform
     user: flightuser

@@ -1,4 +1,4 @@
-package com.flightplatform.weather.openweather;
+package com.flightplatform.weather.kafka;
 
 import com.flightplatform.common.event.KafkaTopics;
 import com.flightplatform.common.event.WeatherSnapshotEvent;

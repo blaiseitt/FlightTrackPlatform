@@ -1,10 +1,12 @@
 package com.flightplatform.weather.openweather;
 
+import com.flightplatform.weather.client.OpenWeatherClient;
+import com.flightplatform.weather.client.OpenWeatherResponse;
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.web.reactive.function.client.WebClient;
-import com.flightplatform.weather.openweather.BoundingBoxGrid.BoundingBox;
+import com.flightplatform.weather.service.BoundingBoxGrid.BoundingBox;
 
 import java.util.Optional;
 
@@ -35,7 +37,7 @@ class OpenWeatherClientTest {
                         .withStatus(429)));
 
         BoundingBox cell = new BoundingBox("PL_03_05", 51.0, 53.0, 20.0, 22.0, 52.0, 21.0);
-        Optional<OpenWeatherResponse> result = openWeatherClient.fetchForCell(cell);
+        Optional<OpenWeatherResponse> result = openWeatherClient.fetchForCoordinates(cell.centerLat(), cell.centerLon());
 
         assertThat(result).isEmpty();
     }
@@ -54,7 +56,7 @@ class OpenWeatherClientTest {
 
         //only central la lo matters for this test
         BoundingBox cell = new BoundingBox("PL_03_05", 51.0, 53.0, 20.0, 22.0, 51.76, 19.46);
-        Optional<OpenWeatherResponse> result = openWeatherClient.fetchForCell(cell);
+        Optional<OpenWeatherResponse> result = openWeatherClient.fetchForCoordinates(cell.centerLat(), cell.centerLon());
 
         assertThat(result).isPresent();
         assertThat(result.get().main().temp()).isEqualTo(13.08);

@@ -1,7 +1,9 @@
-package com.flightplatform.weather.openweather;
+package com.flightplatform.weather.kafka;
 
 import com.flightplatform.common.event.KafkaTopics;
 import com.flightplatform.common.event.WeatherSnapshotEvent;
+import com.flightplatform.weather.mongo.repo.WeatherSnapshotRepository;
+import com.flightplatform.weather.mongo.domain.WeatherSnapshot;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;

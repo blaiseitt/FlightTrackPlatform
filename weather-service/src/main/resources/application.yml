@@ -9,6 +9,20 @@ spring:
   data:
     mongodb:
       uri: mongodb://localhost:27017/flightplatform
+  datasource:
+    url: jdbc:postgresql://localhost:5433/flightplatform
+    username: flightuser
+    password: flightpass
+  jpa:
+    hibernate:
+      ddl-auto: validate
+  flyway:
+    enabled: true
+    table: flyway_schema_history_weather
+    locations: classpath:db/migration
+    url: jdbc:postgresql://localhost:5433/flightplatform
+    user: flightuser
+    password: flightpass
 
 weather:
   openweather:

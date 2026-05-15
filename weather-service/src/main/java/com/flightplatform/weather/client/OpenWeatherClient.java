@@ -1,6 +1,5 @@
-package com.flightplatform.weather.openweather;
+package com.flightplatform.weather.client;
 
-import com.flightplatform.weather.openweather.BoundingBoxGrid.BoundingBox;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -24,18 +23,18 @@ public class OpenWeatherClient {
         this.apiKey = apiKey;
     }
 
-    public Optional<OpenWeatherResponse> fetchForCell(BoundingBox cell) {
+    public Optional<OpenWeatherResponse> fetchForCoordinates(double lat, double lon) {
         try {
             return Optional.ofNullable(
                     webClient.get()
-                            .uri(buildUri(cell.centerLat(), cell.centerLon()))
+                            .uri(buildUri(lat, lon))
                             .retrieve()
                             .bodyToMono(OpenWeatherResponse.class)
                             .block()
             );
         } catch (Exception e) {
-            log.warn("OpenWeather fetch failed for cell={} lat={} lon={}: {}",
-                    cell.id(), cell.centerLat(), cell.centerLon(), e.getMessage());
+            log.warn("OpenWeather fetch failed for coordinates= lat={} lon={}: {}",
+                    lat, lon, e.getMessage());
             return Optional.empty();
         }
     }

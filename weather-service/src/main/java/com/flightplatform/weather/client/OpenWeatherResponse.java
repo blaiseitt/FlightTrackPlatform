@@ -1,4 +1,4 @@
-package com.flightplatform.weather.openweather;
+package com.flightplatform.weather.client;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;

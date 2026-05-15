@@ -1,4 +1,4 @@
-package com.flightplatform.weather.openweather;
+package com.flightplatform.weather.config;
 
 import com.flightplatform.common.event.KafkaTopics;
 import org.apache.kafka.clients.admin.NewTopic;
